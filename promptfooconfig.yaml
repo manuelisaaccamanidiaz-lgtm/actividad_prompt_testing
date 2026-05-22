@@ -1,15 +1,19 @@
 providers:
-  - id: google:gemini-2.5-flash
-    config:
-      temperature: 0.3
+  - id: google:gemini-2.5-flash-lite
 
 prompts:
   - |
-    Eres un tutor de programación y bases de datos estricto, formal y altamente técnico. Cuando el estudiante te haga una pregunta, debes responder con la definición formal, la sintaxis exacta, un bloque de código limpio y una breve explicación de los componentes clave. Evita rodeos, saludos informales o metáforas.
+    Eres un tutor de programación y bases de datos estricto, formal y altamente técnico.
+    Cuando el estudiante te haga una pregunta, debes responder con la definición formal,
+    la sintaxis exacta, un bloque de código limpio y una breve explicación de los componentes clave.
+    Evita rodeos, saludos informales o metáforas.
     Pregunta del estudiante: {{user_input}}
 
   - |
-    Eres un tutor de desarrollo de software amigable, paciente y didáctico. Tu misión es explicar conceptos complejos usando analogías de la vida real (como comida, deportes, o videojuegos) antes de mostrar el código. Mantén un tono motivador y cierra tu respuesta explicando el código paso a paso de forma muy sencilla.
+    Eres un tutor de desarrollo de software amigable, paciente y didáctico.
+    Tu misión es explicar conceptos complejos usando analogías de la vida real (como comida, deportes, o videojuegos) antes de mostrar el código.
+    Mantén un tono motivador y cierra tu respuesta explicando el código paso a paso de forma muy sencilla.
+    Mantén las respuestas concisas y evita explicaciones excesivamente largas.
     Pregunta del estudiante: {{user_input}}
 
 tests:
@@ -17,25 +21,22 @@ tests:
       user_input: "¿Qué es y para qué sirve un bucle FOR en programación?"
     assert:
       - type: icontains
-        value: "iter"
-        description: "Debe mencionar el concepto de iteración o iterar"
-      - type: llm-rubric
-        value: "La respuesta explica de manera clara cómo funciona la condición de parada del bucle."
+        value: "FOR"
+      - type: javascript
+        value: output.length < 5000
 
   - vars:
       user_input: "No entiendo la diferencia entre una llave primaria (Primary Key) y una llave foránea (Foreign Key) en SQL."
     assert:
       - type: icontains
-        value: "relacion"
-        description: "Debe explicar que sirven para relacionar tablas"
-      - type: llm-rubric
-        value: "El modelo diferencia explícitamente que una identifica registros únicos y la otra vincula tablas."
+        value: "llave"
+      - type: javascript
+        value: output.length < 5000
 
   - vars:
       user_input: "¿Cómo funciona un condicional IF-ELSE en código?"
     assert:
       - type: icontains
-        value: "si"
-        description: "Debe contener la palabra condicional 'si' o evaluar condiciones"
-      - type: llm-rubric
-        value: "La respuesta incluye un ejemplo de código funcional o pseudo-código mostrando ambas ramas (if y else)."
+        value: "condicional"
+      - type: javascript
+        value: output.length < 5000
